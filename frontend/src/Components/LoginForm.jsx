@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { useAuth } from "../Context/AuthContext";
+import { useAdmin } from "../Context/AdminContext";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({ closeModal, goToSignup }) => {
-  const { login } = useAuth();
+  const {login} = useAuth();
+  const { login: adminLogin } = useAdmin();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -29,12 +33,26 @@ const LoginForm = ({ closeModal, goToSignup }) => {
         throw new Error(data.message || "Login failed");
       }
 
-      login({
-        id: data.user.id,
-        name: data.user.name,
-        role: data.user.role,
-        token: data.token
-      });
+      // Check role
+      if (data.user.role === "admin") {
+        adminLogin(
+          {
+            id: data.user.id,
+            name: data.user.name,
+            role: "admin",
+          },
+          data.token
+        );
+        navigate("/admin/add-service");
+      } else {
+        login({
+          id: data.user.id,
+          name: data.user.name,
+          role: data.user.role,
+          token: data.token
+        });
+      }
+
 
       closeModal();
     } catch (err) {
@@ -46,11 +64,13 @@ const LoginForm = ({ closeModal, goToSignup }) => {
 
   return (
     <>
+      {/* Backdrop */}
       <div className="fixed inset-0 z-40 backdrop-blur-sm bg-black/30" />
 
+      {/* Modal */}
       <div className="fixed inset-0 flex items-center justify-center z-50">
         <div className="bg-white rounded-lg shadow-lg flex w-11/12 md:w-2/3 lg:w-1/2 h-[470px] overflow-hidden">
-          
+
           {/* Image */}
           <div className="hidden md:block md:w-1/2">
             <img
@@ -91,7 +111,7 @@ const LoginForm = ({ closeModal, goToSignup }) => {
 
               <button
                 disabled={loading}
-                className="w-full bg-blue-600 text-white py-2 rounded"
+                className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
               >
                 {loading ? "Logging in..." : "Login"}
               </button>
@@ -101,7 +121,7 @@ const LoginForm = ({ closeModal, goToSignup }) => {
               Don’t have an account?{" "}
               <span
                 onClick={goToSignup}
-                className="text-blue-600 cursor-pointer"
+                className="text-blue-600 cursor-pointer hover:underline"
               >
                 Sign up
               </span>

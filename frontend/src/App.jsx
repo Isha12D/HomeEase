@@ -1,15 +1,35 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useContext } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import UserLayout from "./Layout/UserLayout";
-import Home from "./Components/Home";
+import Home from "./Pages/Home";
+import ServicePage from "./Components/ServicePage";
+import AdminLayout from "./Layout/AdminLayout";
+import AddService from "./Components/Admin/AddService";
+import LoginForm from "./Components/LoginForm";
+import { AdminContext } from "./Context/AdminContext";
 
+const ProtectedAdminRoute = ({ children }) => {
+  const { admin } = useContext(AdminContext);
+  if (!admin) return <Navigate to="/" replace />;
+  return children;
+};
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* User routes */}
         <Route element={<UserLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/services/:id" element={<ServicePage />} />
+        </Route>
+
+        {/* Admin login */}
+        <Route path="/admin/login" element={<LoginForm />} />
+
+        {/* Admin protected routes */}
+        <Route element={<ProtectedAdminRoute><AdminLayout /></ProtectedAdminRoute>}>
+          <Route path="/admin/add-service" element={<AddService />} />
         </Route>
       </Routes>
     </BrowserRouter>
