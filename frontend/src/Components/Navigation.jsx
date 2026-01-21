@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import { useAuth } from "../Context/AuthContext";
@@ -9,6 +9,7 @@ const Navigation = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const navigate = useNavigate();
 
   const userInitial = user?.name?.charAt(0).toUpperCase();
 
@@ -61,6 +62,7 @@ const Navigation = () => {
                     onClick={() => {
                       logout();
                       setShowMenu(false);
+                      navigate("/");
                     }}
                     
                     className="block px-4 py-2 hover:bg-gray-100 w-full text-left"

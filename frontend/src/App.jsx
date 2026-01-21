@@ -9,6 +9,14 @@ import LoginForm from "./Components/LoginForm";
 import { AdminContext } from "./Context/AdminContext";
 import Orders from "./Pages/Orders";
 import Profile from "./Pages/Profile";
+import { useAuth } from "./Context/AuthContext";
+
+
+const ProtectedUserRoute = ({ children }) => {
+  const { user } = useAuth();
+  if (!user) return <Navigate to="/" replace />;
+  return children;
+};
 
 const ProtectedAdminRoute = ({ children }) => {
   const { admin } = useContext(AdminContext);
@@ -24,8 +32,8 @@ function App() {
         <Route element={<UserLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/services/:id" element={<ServicePage />} />
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/orders" element={ <Orders /> } />
+          <Route path="/profile" element={ <Profile /> } />
         </Route>
 
         {/* Admin login */}

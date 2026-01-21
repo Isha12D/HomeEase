@@ -41,7 +41,7 @@ export const getUserOrders = async (req, res) => {
 };
 
 
-//cancel booking
+//cancel booking --> by user
 export const cancelBooking = async (req, res) => {
   try {
     const booking = await Booking.findById(req.params.id);
@@ -71,6 +71,111 @@ export const cancelBooking = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+
+//unassigned booking fetch
+export const getPendingBookings = async (req, res) => {
+  try {
+    const providerId = req.user.id;
+    const bookings = await Booking.find({
+      status: "pending",
+      provider: { $exists: false},
+      user: {$ne: providerId}//--->provider can't accept his own booking
+    })
+      .populate("user", "name email")
+      .populate("service");
+
+    res.json(bookings);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+//booking accept
+export const acceptBooking = async (req, res) => {
+  try {
+    const providerId = req.user.id;
+    const bookingId = req.params.id;
+
+    const booking = await Booking.findById(bookingId);
+
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    if (booking.status !== "pending") {
+      return res.status(400).json({ message: "Booking already taken" });
+    }
+
+    booking.provider = providerId;
+    booking.status = "scheduled";
+    await booking.save();
+
+    res.json({ message: "Booking accepted", booking });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+//completed orders of a provider
+export const getProviderCompletedOrders = async (req, res) => {
+  try {
+    const orders = await Booking.find({
+      provider: req.user.id,
+      status: "completed",
+    })
+      .populate("user", "name email")
+      .populate("service");
+
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const completeBooking = async (req, res) => {
+  try {
+    const booking = await Booking.findById(req.params.id);
+
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    if (
+      !booking.provider ||
+      booking.provider.toString() !== req.user.id
+    ) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    booking.status = "completed";
+    await booking.save();
+
+    res.json({ message: "Booking marked as completed", booking });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+// provider scheduled orders
+export const getProviderScheduledOrders = async (req, res) => {
+  try {
+    const orders = await Booking.find({
+      provider: req.user.id,
+      status: "scheduled",
+    })
+      .populate("user", "name email")
+      .populate("service");
+
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
 
 
 
