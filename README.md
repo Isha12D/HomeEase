@@ -116,7 +116,7 @@ pending → scheduled → completed
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Isha12D/HomeEase
 cd <project-folder>
 ```
 
