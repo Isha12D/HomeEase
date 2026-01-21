@@ -17,7 +17,6 @@ adminSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, 10);
 });
 
-// ✅ ADD THIS (THIS WAS MISSING)
 adminSchema.methods.matchPassword = function (enteredPassword) {
   return bcrypt.compare(enteredPassword, this.password);
 };

@@ -7,6 +7,8 @@ import AdminLayout from "./Layout/AdminLayout";
 import AddService from "./Components/Admin/AddService";
 import LoginForm from "./Components/LoginForm";
 import { AdminContext } from "./Context/AdminContext";
+import Orders from "./Pages/Orders";
+import Profile from "./Pages/Profile";
 
 const ProtectedAdminRoute = ({ children }) => {
   const { admin } = useContext(AdminContext);
@@ -22,6 +24,8 @@ function App() {
         <Route element={<UserLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/services/:id" element={<ServicePage />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
 
         {/* Admin login */}

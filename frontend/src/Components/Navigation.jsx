@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
@@ -12,6 +12,15 @@ const Navigation = () => {
 
   const userInitial = user?.name?.charAt(0).toUpperCase();
 
+  useEffect(() => {
+    if (user) {
+      setShowLogin(false);
+      setShowSignup(false);
+      setShowMenu(false);
+    }
+  }, [user]);
+
+
   return (
     <>
       <nav className="bg-white shadow px-6 py-4 flex justify-between items-center">
@@ -21,6 +30,7 @@ const Navigation = () => {
           <Link to="/">Home</Link>
           <Link to="/about">About</Link>
           <Link to="/reviews">Reviews</Link>
+          {user && <Link to="/orders">Orders</Link>}
 
           {!user ? (
             <button
@@ -40,8 +50,19 @@ const Navigation = () => {
 
               {showMenu && (
                 <div className="absolute right-0 mt-2 bg-white border rounded shadow">
+                  <Link
+                    to="/profile"
+                    onClick={() => setShowMenu(false)}
+                    className="block px-4 py-2 hover:bg-gray-100 text-left"
+                  >
+                    Profile
+                  </Link>
                   <button
-                    onClick={logout}
+                    onClick={() => {
+                      logout();
+                      setShowMenu(false);
+                    }}
+                    
                     className="block px-4 py-2 hover:bg-gray-100 w-full text-left"
                   >
                     Logout

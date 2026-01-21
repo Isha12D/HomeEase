@@ -1,6 +1,6 @@
 import Service from "../models/Service.js";
 
-// Get all services
+// all services
 export const getAllServices = async (req, res) => {
   try {
     const services = await Service.find();
@@ -10,7 +10,7 @@ export const getAllServices = async (req, res) => {
   }
 };
 
-// Get service by ID
+// fetch service by ID
 export const getServiceById = async (req, res) => {
   try {
     const service = await Service.findById(req.params.id);

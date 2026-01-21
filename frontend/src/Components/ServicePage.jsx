@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import BookingForm from "./BookingForm";
 
 const ServicePage = () => {
   const { id } = useParams();
   const [service, setService] = useState(null);
+  const [showBooking, setShowBooking] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -29,6 +31,7 @@ const ServicePage = () => {
   if (!service) return null;
 
   return (
+    <>
     <div className="max-w-6xl mx-auto my-10 flex flex-col md:flex-row gap-8 p-6 bg-gray-900 text-white rounded-lg">
       <img
         src={service.img}
@@ -40,11 +43,20 @@ const ServicePage = () => {
         <p className="text-yellow-400 font-semibold">⭐ {service.rating || 4.5}</p>
         <p>{service.description}</p>
         <p className="text-lg font-semibold">Price: ₹{service.price}</p>
-        <button className="mt-4 bg-green-600 hover:bg-green-700 py-2 px-4 rounded w-32">
+        <button onClick={() => setShowBooking(true)} className="mt-4 bg-green-600 hover:bg-green-700 py-2 px-4 rounded w-32">
           Book Now
         </button>
       </div>
     </div>
+
+    {/* Booking Form */}
+      {showBooking && (
+        <BookingForm
+          service={service}
+          onClose={() => setShowBooking(false)}
+        />
+      )}
+    </>
   );
 };
 

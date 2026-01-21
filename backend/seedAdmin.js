@@ -22,10 +22,10 @@ const seedAdmin = async () => {
       password: "admin123",
     });
 
-    console.log("✅ Admin seeded successfully");
+    console.log(" Admin seeded successfully");
     process.exit(0);
   } catch (err) {
-    console.error("❌ Seeding error:", err);
+    console.error(" Seeding error:", err);
     process.exit(1);
   }
 };

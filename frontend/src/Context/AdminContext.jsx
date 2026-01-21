@@ -6,7 +6,6 @@ export const AdminProvider = ({ children }) => {
   const [admin, setAdmin] = useState(null);
   const [token, setToken] = useState(null);
 
-  // Load from localStorage on mount
   useEffect(() => {
     const storedAdmin = localStorage.getItem("admin");
     const storedToken = localStorage.getItem("adminToken");
@@ -38,7 +37,6 @@ export const AdminProvider = ({ children }) => {
   );
 };
 
-// ✅ THIS WAS MISSING
 export const useAdmin = () => {
   const context = useContext(AdminContext);
   if (!context) {

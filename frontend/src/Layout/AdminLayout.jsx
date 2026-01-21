@@ -1,4 +1,3 @@
-// AdminLayout.jsx
 import React, { useContext } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { AdminContext } from '../Context/AdminContext';
@@ -27,7 +26,7 @@ const AdminLayout = () => {
 
       {/* Main Content */}
       <div className="w-5/6 p-6 bg-gray-100">
-        <Outlet /> {/* This renders whatever admin route is active */}
+        <Outlet /> 
       </div>
     </div>
   );

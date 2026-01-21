@@ -5,6 +5,6 @@ import { protectAdmin } from "../middleware/adminMiddleware.js";
 const router = express.Router();
 
 router.post("/login", loginAdmin);
-router.post("/add-service",protectAdmin, addService);
+router.post("/add-service", addService);
 
 export default router;

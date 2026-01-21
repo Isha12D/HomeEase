@@ -45,12 +45,15 @@ const LoginForm = ({ closeModal, goToSignup }) => {
         );
         navigate("/admin/add-service");
       } else {
-        login({
-          id: data.user.id,
-          name: data.user.name,
-          role: data.user.role,
-          token: data.token
-        });
+        login(
+          {
+            _id: data.user.id,
+            name: data.user.name,
+            role: data.user.role,
+          },
+          data.token
+        );
+
       }
 
 

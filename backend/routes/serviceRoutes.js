@@ -3,7 +3,6 @@ import { getAllServices, getServiceById } from "../controllers/serviceController
 
 const router = express.Router();
 
-//get all services
 router.get("/", getAllServices);
 router.get("/:id", getServiceById);
 
