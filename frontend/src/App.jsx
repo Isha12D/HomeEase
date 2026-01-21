@@ -10,6 +10,7 @@ import { AdminContext } from "./Context/AdminContext";
 import Orders from "./Pages/Orders";
 import Profile from "./Pages/Profile";
 import { useAuth } from "./Context/AuthContext";
+import ReportsPage from "./Components/Admin/ReportsPage";
 
 
 const ProtectedUserRoute = ({ children }) => {
@@ -42,6 +43,7 @@ function App() {
         {/* Admin protected routes */}
         <Route element={<ProtectedAdminRoute><AdminLayout /></ProtectedAdminRoute>}>
           <Route path="/admin/add-service" element={<AddService />} />
+          <Route path="/admin/reports" element={<ReportsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

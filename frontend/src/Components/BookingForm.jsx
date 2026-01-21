@@ -4,6 +4,8 @@ import { useAuth } from "../Context/AuthContext";
 
 const BookingForm = ({ service, onClose }) => {
   const { user, token } = useAuth();
+  const today = new Date().toISOString().split("T")[0];
+
 
   const [formData, setFormData] = useState({
     city: "",
@@ -107,6 +109,9 @@ const BookingForm = ({ service, onClose }) => {
             value={formData.date}
             onChange={handleChange}
             InputLabelProps={{ shrink: true }}
+            inputProps={{
+              min: today,
+            }}
             required
           />
 
